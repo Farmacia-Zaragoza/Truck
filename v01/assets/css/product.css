@@ -1,0 +1,6 @@
+.left-sidebar, .right-sidebar{
+	height: 100%;
+}
+.flexslider .slides>li{
+	display: block;
+}
