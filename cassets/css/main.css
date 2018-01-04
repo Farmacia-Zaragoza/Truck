@@ -784,7 +784,9 @@ footer .plus {
 .page-id-policy ol {
   padding: 0 0 20px 20px; }
 
+
 /* policy page ends here */
+
 /* Flex slider customization Finishes */
 /*Chat-captcha starts*/
 .captcha-chat {
@@ -1621,11 +1623,110 @@ a.pop-container-L.active::after {
       color: #000;
   }
   .policy_content{
-    background-color: #EDEDED;
-    padding: 5px;
+    background-color: rgba(63, 127, 191, 0.8);
+    padding: 60px 10px 10px 10px;
     height: 860px;
-    overflow-y: scroll;
+    position: relative;
   }
+
+
+  .policy_controls {
+    width: 100%;
+    position: absolute;
+    /*background-color: #000;*/
+    height: 60px;
+    top: 0;
+    left: 0;
+  }
+  .policy_controls_inner{
+    height: 100%;
+    float: right;
+  }
+  .policy_controls_inner>div{
+    height: 100%;
+    width: 50px;
+    float: left;
+    margin: 0 10px;
+  }
+  .zoom_buttons {
+    position: relative;
+  }
+  .zoom_control_button {
+    height: 30%;
+    display: flex;
+  }
+  .zoom_control_button>img, .zoom_control_button>svg {
+    height: 100%;
+    margin: auto;
+  }
+
+  //AutoScroll Button
+  .auto_scroll_button>img#auto_scroll_green{
+    display: none;
+  }
+  .auto_scroll_button>img#auto_scroll_red{
+    display: block;
+  }
+  .auto_scroll_button.auto_scroll_enabled>img#auto_scroll_green{
+    display: block;
+  }
+  .auto_scroll_button.auto_scroll_enabled>img#auto_scroll_red{
+    display: none;
+  }
+  .auto_scroll_button>img{
+    height: 100%;
+  }
+
+
+  //KeyboardControlButton
+  .keyboard_control_button>img#keyboard_green{
+    display: none;
+  }
+  .keyboard_control_button>img#keyboard_red{
+    display: block;
+  }
+  .keyboard_control_button.keyboard_control_enabled>img#keyboard_green{
+    display: block;
+  }
+  .keyboard_control_button.keyboard_control_enabled>img#keyboard_red{
+    display: none;
+  }
+  .keyboard_control_button>img{
+    height: 100%;
+  }
+
+
+
+  .policy_inner {
+    height: 100%;
+    overflow-y: scroll;
+    font-size: 1em;
+    background-color: #EDEDED;
+  }
+  /* Stylish ScrollBar Start */
+  .policy_inner::-webkit-scrollbar {
+      width: 12px;
+  }
+   
+  /* Track */
+  .policy_inner::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+      -webkit-border-radius: 10px;
+      border-radius: 10px;
+  }
+   
+  /* Handle */
+  .policy_inner::-webkit-scrollbar-thumb {
+      -webkit-border-radius: 10px;
+      border-radius: 10px;
+      background: #D0DEEE; 
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+  }
+  .policy_inner::-webkit-scrollbar-thumb:window-inactive {
+    background: #D0DEEE; 
+  }
+  /* Stylish ScrollBar End */
+
   .policy_content section{
     margin-bottom: 25px;
     padding: 5px;

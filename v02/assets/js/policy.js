@@ -845,6 +845,19 @@
         }
 
 
+        //Policy controls
+
+        $('.zoom_control_button').click(function() {
+            var incress = $(this).hasClass('zoom_in_policy'); //check which button it is. zoom in or out
+            var fontSize = parseFloat($(".policy_inner").css('font-size'));
+            if(incress)
+                $(".policy_inner").css('font-size', (fontSize * 1.2)+'px');
+            else
+                $(".policy_inner").css('font-size', (fontSize * 0.8)+'px');
+        });
+
+
+
         // loading gif whole page starts
         //must be at second last beofre cookie banner of js file
         //so that loader hides at last
