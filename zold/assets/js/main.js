@@ -1,490 +1,8 @@
 
-/* MarqueeDirection Start */
-    ;
-    (function($) {
-
-        'use strict';
-
-        $.fn.extend({
-            marquee: function(options) {
-
-                this.each(function() {
-
-                    var that = this; //To prevent any scoping issue with this
-                    that.defaultOptions = {
-                        speed: 10, //10 px per second
-                        direction: "vertical" // Verical scrolling marquee            
-                    }
-                    var $settings = $.extend({}, options, that.defaultOptions, {
-                        speed: $(that).data("speed"),
-                        direction: $(that).data("direction")
-                    });
-
-                    var $forward, $backward, $pause, $revalidate; // Main feature functions   
-                    var $toggleForward; //evtnt that will enable back and forth togglinf in forward direction  
-                    var $forwardStop; // Will scroll the shit and stop when content finishes off.         
-
-                    var $scroll_step; // The remaining scroll distance. The distance for one animation
-                    var $half_scroll; // To store nearest integer of two_divs_scrollHeight/2 or two_divs_scrollWidth/2 
-                    var $speed; //Dynamic speed as per remaining amount of scroll
-
-
-                    $pause = function() {
-                        $(that).stop();                   
-                    };
-
-                    if (($settings.direction == "vertical")) {
-
-                        $forward = function(event, settings) {                        
-
-                            $half_scroll = Math.floor($(that).prop("scrollHeight") / 2);
-
-                            $(that).stop();
-                            if ($(that).scrollTop() >= $half_scroll) {
-                                $(that).scrollTop($(that).scrollTop() - $half_scroll);
-                            }
-
-                            $scroll_step = $half_scroll - $(that).scrollTop();
-
-                            if ($settings.speed > 0) {
-                                $speed = (!!settings ? settings.speed : $settings.speed);
-                            } else {
-                                console.error("speed must be > 0");
-                                $speed = 1;
-                            }
-
-
-                            $(that).animate({
-                                scrollTop: $half_scroll
-                            }, (1 / $speed) * $scroll_step * 1000, "linear", function() { $forward(event, settings) });                        
-
-                        };
-
-                        $backward = function(event, settings) {
-
-                            $half_scroll = Math.floor($(that).prop("scrollHeight") / 2);
-
-                            $(that).stop();
-                            if ($(that).scrollTop() <= $half_scroll - $(that).outerHeight()) {
-                                $(that).scrollTop($(that).scrollTop() + $half_scroll);
-                            }
-
-                            $scroll_step = $(that).outerHeight() + $(that).scrollTop() - $half_scroll;
-
-                            if ($settings.speed > 0) {
-                                $speed = (!!settings ? settings.speed : $settings.speed);
-                            } else {
-                                console.error("speed must be > 0");
-                                $speed = 1;
-                            }
-
-                            $(that).animate({
-                                scrollTop: $half_scroll - $(that).outerHeight()
-                            }, (1 / $speed) * $scroll_step * 1000, "linear", function() { $backward(event, settings) });
-                        };
-
-                        $toggleForward = function(event, settings) {
-
-                            $half_scroll = Math.floor($(that).prop("scrollHeight") / 2);
-                            $(that).stop();
-
-                            if ($settings.speed > 0) {
-                                $speed = (!!settings ? settings.speed : $settings.speed);
-                            } else {
-                                console.error("speed must be > 0");
-                                $speed = 1;
-                            }
-
-                            if ($(that).scrollTop() <= $half_scroll - $(that).outerHeight()) {
-                                $(that).scrollTop($(that).scrollTop() + $half_scroll);
-                                console.log("before half");
-                            }
-                            if ($(that).scrollTop() == (2 * $half_scroll - $(that).outerHeight())) {
-
-                                console.log("at end");
-
-                                $(that).animate({
-                                    scrollTop: $half_scroll
-                                }, (1 / $speed) * ((2 * $half_scroll - $(that).outerHeight()) - $half_scroll) * 1000, "linear", function() { $toggleForward(event, settings) });
-
-                            } else {
-
-
-                                $scroll_step = 2 * $half_scroll - $(that).outerHeight() - $(that).scrollTop();
-
-                                $(that).animate({
-                                    scrollTop: 2 * $half_scroll - $(that).outerHeight()
-                                }, (1 / $speed) * $scroll_step * 1000, "linear", function() { $toggleForward(event, settings) });
-
-                            }
-
-                        };
-
-                        $forwardStop = function(event, settings) {
-
-
-
-                            $half_scroll = Math.floor($(that).prop("scrollHeight") / 2);
-                            $(that).stop();
-
-                            if ($settings.speed > 0) {
-                                $speed = (!!settings ? settings.speed : $settings.speed);
-                            } else {
-                                console.error("speed must be > 0");
-                                $speed = 1;
-                            }
-
-                            if ($(that).scrollTop() < $half_scroll - $(that).outerHeight()) {
-
-                                $scroll_step = $half_scroll - $(that).outerHeight() - $(that).scrollTop();                           
-
-                                $(that).animate({
-                                    scrollTop: $half_scroll - $(that).outerHeight()
-                                }, (1 / $speed) * $scroll_step * 1000, "linear");
-
-                            }
-                            else if(($(that).scrollTop() != (2*$half_scroll - $(that).outerHeight())) && ($(that).scrollTop() != ($half_scroll - $(that).outerHeight()))){
-
-                                $scroll_step = 2*$half_scroll - $(that).outerHeight() - $(that).scrollTop();
-                                $(that).animate({
-                                    scrollTop: 2*$half_scroll - $(that).outerHeight()
-                                }, (1 / $speed) * $scroll_step * 1000, "linear");
-
-                            }
-
-                        };
-
-
-
-                    } else if (($settings.direction == "horizontal")) {
-
-
-                        $forward = function(event, settings) {
-
-                            $half_scroll = Math.floor($(that).prop("scrollWidth") / 2);
-                            $(that).stop();
-
-                            if ($(that).scrollLeft() >= ($half_scroll)) {
-                                $(that).scrollLeft($(that).scrollLeft() - $half_scroll);
-                            }
-
-                            $scroll_step = $half_scroll - $(that).scrollLeft();
-                            if ($settings.speed > 0) {
-                                $speed = (!!settings ? settings.speed : $settings.speed);
-                            } else {
-                                console.error("speed must be > 0");
-                                $speed = 1;
-                            }
-
-                            $(that).animate({
-                                scrollLeft: $half_scroll
-                            }, (1 / $speed) * $scroll_step * 1000, "linear", function() { $forward(event, settings) });
-
-                        };
-
-                        $backward = function(event, settings) {
-
-                            $half_scroll = Math.floor($(that).prop("scrollWidth") / 2);
-                            $(that).stop();
-                            if ($(that).scrollLeft() <= $half_scroll - $(that).outerWidth()) {
-                                $(that).scrollLeft($(that).scrollLeft() + $half_scroll);
-                            }
-
-                            $scroll_step = $(that).outerWidth() + $(that).scrollLeft() - $half_scroll;
-                            if ($settings.speed > 0) {
-                                $speed = (!!settings ? settings.speed : $settings.speed);
-                            } else {
-                                console.error("speed must be > 0");
-                                $speed = 1;
-                            }
-
-                            $(that).animate({
-                                scrollLeft: $half_scroll - $(that).outerWidth()
-                            }, (1 / $speed) * $scroll_step * 1000, "linear", function() { $backward(event, settings) });
-
-                        };
-
-                        $toggleForward = function(event, settings) {
-
-                            $half_scroll = Math.floor($(that).prop("scrollWidth") / 2);
-                            $(that).stop();
-
-                            if ($settings.speed > 0) {
-                                $speed = (!!settings ? settings.speed : $settings.speed);
-                            } else {
-                                console.error("speed must be > 0");
-                                $speed = 1;
-                            }
-
-                            if ($(that).scrollLeft() <= $half_scroll - $(that).outerWidth()) {
-                                $(that).scrollLeft($(that).scrollLeft() + $half_scroll);
-                                console.log("before half");
-                            }
-                            if ($(that).scrollLeft() == (2 * $half_scroll - $(that).outerWidth())) {
-
-                                console.log("at end");
-
-                                $(that).animate({
-                                    scrollLeft: $half_scroll
-                                }, (1 / $speed) * ((2 * $half_scroll - $(that).outerWidth()) - $half_scroll) * 1000, "linear", function() { $toggleForward(event, settings) });
-
-                            } else {
-
-
-                                $scroll_step = 2 * $half_scroll - $(that).outerWidth() - $(that).scrollLeft();
-
-                                $(that).animate({
-                                    scrollLeft: 2 * $half_scroll - $(that).outerWidth()
-                                }, (1 / $speed) * $scroll_step * 1000, "linear", function() { $toggleForward(event, settings) });
-
-                            }
-
-                        };
-
-                         $forwardStop = function(event, settings) {
-
-                            $half_scroll = Math.floor($(that).prop("scrollWidth") / 2);
-                            $(that).stop();
-                            if ($settings.speed > 0) {
-                                $speed = (!!settings ? settings.speed : $settings.speed);
-                            } else {
-                                console.error("speed must be > 0");
-                                $speed = 1;
-                            }
-
-                            if ($(that).scrollLeft() < $half_scroll - $(that).outerWidth()) {
-
-                                $scroll_step = $half_scroll - $(that).outerWidth() - $(that).scrollLeft();
-
-                                $(that).animate({
-                                    scrollLeft: $half_scroll - $(that).outerWidth()
-                                }, (1 / $speed) * $scroll_step * 1000, "linear");
-
-                            }
-                            else if(($(that).scrollLeft() != (2*$half_scroll - $(that).outerWidth())) && ($(that).scrollLeft() != ($half_scroll - $(that).outerWidth()))){
-                                
-                                $scroll_step = 2*$half_scroll - $(that).outerWidth() - $(that).scrollLeft();
-                                $(that).animate({
-                                    scrollLeft: 2*$half_scroll - $(that).outerWidth()
-                                }, (1 / $speed) * $scroll_step * 1000, "linear");
-
-                            }
-
-                        };
-
-
-                    }
-
-
-                    $revalidate = function() {
-
-                        if (!((($settings.direction == "vertical") && ($(that).outerHeight() <= ($(that).find(".marquee-content").outerHeight() - parseInt($(that).find(".marquee-content").css("padding-bottom"))))) || (($settings.direction == "horizontal") && ($(that).outerWidth() <= ($(that).find(".marquee-content").outerWidth() - parseInt($(that).find(".marquee-content").css("padding-right"))))))) {
-                            $(that).trigger("pause");
-                            $(that).find(".marquee-content").eq(1).remove();
-                            $(that).off("pause forward backward toggleForward forwardStop");
-                        } else if (!$(that).find(".marquee-content").eq(1).length) {
-                            $(that).find(".marquee-content").clone().appendTo($(that).find(".marquee-wrapper"));
-                            $(that).on("pause", $pause);
-                            $(that).on("forward", $forward);
-                            $(that).on("backward", $backward);
-                            $(that).on("toggleForward", $toggleForward);
-                            $(that).on("forwardStop", $forwardStop);
-                        }
-                    }
-
-                    $(that).on("revalidate", $revalidate);
-
-
-
-                });
-
-                var scope = this; //again scoping issues
-
-                function resize_revalidate() {
-                    $(window).off("resize.resize_revalidate");
-                    setTimeout(function() {
-                        $(scope).trigger("revalidate");
-                        $(window).on("resize.resize_revalidate", resize_revalidate);
-                    }, 100);
-                }
-
-                $(this).trigger("revalidate");
-
-                $(window).on("resize.resize_revalidate", resize_revalidate);
-
-                return this;
-            }
-        });
-
-    })(jQuery);
-
-/* MarqueeDirection End */
-
-
-/* Client Captcha Code Start*/
-
-    ;(function(window, document, $, undefined) {
-
-        var possibleCharacters = "ABCDGHIJKLMNPQRSTUVWXYZabcdefghkmnpqrstuvwxyz123456789";
-
-        //removed following characters: i j E F O l o 0
-
-        var defaults = {
-
-            selector: "#captcha",
-            text: null,
-            randomText: true,
-            randomColours: true,
-            width: 244,
-            height: 163,
-            colour1: null,
-            colour2: null,
-            font: 'normal 40px "Comic Sans MS", cursive, sans-serif',
-            onSuccess: function() {
-                alert('Correct!');
-            },
-            onFailure: function() {
-                alert('wrong!');
-            }
-        };
-
-        var CAPTCHA = function(config) {
-
-            var that = this;
-
-            this._settings = $.extend({}, defaults, config || {});
-
-            this._container = $(this._settings.selector);
-
-            var canvasWrapper = $('<div>').prependTo(this._container);
-
-            this._canvas = $('<canvas>').appendTo(canvasWrapper).attr("width", this._settings.width).attr("height", this._settings.height);
-
-            this._input = this._container.find('.user-text').on('keypress.captcha', function(e) {
-                    if (e.which == 13) {
-                        that.validate(that._input.val());
-                    }
-                });                
-
-            this._button = this._container.find('.validate')
-                .on('click.captcha', function() {
-                    that.validate(that._input.val());
-                });
-
-            this._buttonRefresh = this._container.find('.refresh')
-                .on('click.captcha', function() {
-                    that.generate();
-                });
-
-            this._context = this._canvas.get(0).getContext("2d");
-
-        };
-
-        CAPTCHA.prototype = {
-
-            generate: function() {
-
-                var context = this._context;
-
-                //if there's no text, set the flag to randomly generate some
-                if (this._settings.text == null || this._settings.text == '') {
-                    this._settings.randomText = true;
-                }
-
-                if (this._settings.randomText) {
-                    this._generateRandomText();
-                }
-
-                if (this._settings.randomColours) {
-                    this._settings.colour1 = this._generateRandomColour();
-                    this._settings.colour2 = this._generateRandomColour();
-                }                
-
-                var gradient1 = context.createLinearGradient(0, 0, this._settings.width, 0);
-                gradient1.addColorStop(0, this._settings.colour1);
-                gradient1.addColorStop(1, this._settings.colour2);
-
-                context.fillStyle = gradient1;
-                context.fillRect(0, 0, this._settings.width, this._settings.height);
-
-                context.fillStyle = "rgba(255,255,255,0.65)";
-                context.fillRect(0, 0, this._settings.width, this._settings.height);
-
-                var gradient2 = context.createLinearGradient(0, 0, this._settings.width, 0);
-                gradient2.addColorStop(0, this._settings.colour2);
-                gradient2.addColorStop(1, this._settings.colour1);
-
-                context.font = this._settings.font;
-                context.fillStyle = gradient2;
-
-                context.setTransform((Math.random() / 10) + 0.9, //scalex
-                    0.1 - (Math.random() / 5), //skewx
-                    0.1 - (Math.random() / 5), //skewy
-                    (Math.random() / 10) + 0.9, //scaley
-                    (Math.random() * 20) + 10, //transx
-                    100); //transy
-
-                context.fillText(this._settings.text, 0, 0);
-
-                context.setTransform(1, 0, 0, 1, 0, 0);
-
-                var numRandomCurves = Math.floor((Math.random() * 3) + 5);
-
-                for (var i = 0; i < numRandomCurves; i++) {
-                    this._drawRandomCurve();
-                }
-            },
-
-            validate: function(userText) {
-                if (userText.toUpperCase() === this._settings.text.toUpperCase()) {
-                    this._settings.onSuccess();
-                } else {
-                    this._settings.onFailure();
-                }
-            },
-
-            _drawRandomCurve: function() {
-
-                var ctx = this._context;
-
-                var gradient1 = ctx.createLinearGradient(0, 0, this._settings.width, 0);
-                gradient1.addColorStop(0, Math.random() < 0.5 ? this._settings.colour1 : this._settings.colour2);
-                gradient1.addColorStop(1, Math.random() < 0.5 ? this._settings.colour1 : this._settings.colour2);
-
-                ctx.lineWidth = Math.floor((Math.random() * 4) + 2);
-                ctx.strokeStyle = gradient1;
-                ctx.beginPath();
-                ctx.moveTo(Math.floor((Math.random() * this._settings.width)), Math.floor((Math.random() * this._settings.height)));
-                ctx.bezierCurveTo(Math.floor((Math.random() * this._settings.width)), Math.floor((Math.random() * this._settings.height)),
-                    Math.floor((Math.random() * this._settings.width)), Math.floor((Math.random() * this._settings.height)),
-                    Math.floor((Math.random() * this._settings.width)), Math.floor((Math.random() * this._settings.height)));
-                ctx.stroke();
-            },
-
-            _generateRandomText: function() {
-                this._settings.text = '';
-                var length = 5; //Math.floor((Math.random() * 3) + 6);
-                for (var i = 0; i < length; i++) {
-                    this._settings.text += possibleCharacters.charAt(Math.floor(Math.random() * possibleCharacters.length));
-                }
-            },
-
-            _generateRandomColour: function() {
-                return "rgb(" + Math.floor((Math.random() * 255)) + ", " + Math.floor((Math.random() * 255)) + ", " + Math.floor((Math.random() * 255)) + ")";
-            }
-        };
-
-        $.Captcha = CAPTCHA || {};
-
-    }(window, document, jQuery));
-
-/* Client Captcha Code End*/
-
-
-
-/* Main_live Start from here */
-
 (function($) {
+    // window.onerror = function(){
+    //    return true;
+    // }
     $(document).ready(function() {
         'use strict';
 
@@ -518,6 +36,7 @@
             }
 
 
+
             return {
                 isTouchDevice: isTouchDevice,
                 isRatina: isRatina,
@@ -541,7 +60,6 @@
                 return;
             }
         });
-        // Global Module finishes: User Agent
 
 
         // Custom cookie global object to store all cookie related stuff
@@ -1262,7 +780,7 @@
 
             ! function() {
                  if ($("body").hasClass("page-id-homepage")) {
-
+                     //$(".lang-container a:first-child").addClass('active');
                      var active_top = $(".lang-container a.active").position().top;
                      var active_left = $(".lang-container a.active").position().left;
                      var scrollSpeed = 10;
@@ -1289,7 +807,7 @@
                              });
 
                              //mouseenter on right-arrow
-                             $(".lang-grand .arrow-right > svg.arrow").on("mouseenter", function() {
+                             $(".lang-grand .arrow-right > .arrow").on("mouseenter", function() {
 
                                  var remLength = $(".lang-container .flags")[0].scrollWidth - $(".lang-container .flags").width();
                                  var scrollableLength = remLength - $(".lang-container .flags").scrollLeft();
@@ -1305,7 +823,7 @@
                              });
 
                              //mouseenter on left-arrow
-                             $(".lang-grand .arrow-left > svg.arrow").on("mouseenter", function() {
+                             $(".lang-grand .arrow-left > .arrow").on("mouseenter", function() {
 
                                  var remLength = $(".lang-container .flags")[0].scrollWidth - $(".lang-container .flags").width();
                                  var scrollableLength = remLength - $(".lang-container .flags").scrollLeft();
@@ -1321,7 +839,7 @@
                              });
 
                              //mouseleave from any arrow
-                             $(".lang-grand svg.arrow").mouseleave(function() {
+                             $(".lang-grand svg.arrow, .lang-grand img.arrow").mouseleave(function() {
                                  $(".lang-container .flags").stop();
                                  $(".lang-container .ellipse").stop();
                              });
@@ -1469,11 +987,8 @@
              if ($("body").hasClass("page-id-homepage")) {
                 //chnaging both sidebar width dynamically
                   var container_width = $('.container').width();
-                  // console.log("container_width",container_width);
-                  
                   var calculated_width = Math.floor(($(window).width()/2)-(container_width/2));
                   $('.left-sidebar, .right-sidebar').css('width', (calculated_width-.5)+'px');
-                  // console.log("calculated_width",calculated_width);
 
                   var imgsArray = [
                                    "truck_model_001_blue_left",
@@ -1514,17 +1029,16 @@
                   var truck_folder_name = $("#truck_folder_name").html();
                   console.log('mini truck Image folder: '+truck_folder_name);
                   var linksMainString = $('#truck_links').data('links');
-                  if(linksMainString === undefined){
+                  var linksArray = linksMainString.split(",");
+                  //console.log(linksArray);
+                  if(linksArray === undefined){
                       console.log("Error: There is no link for the trucks");
                       linksArray = [];
                       for(let i=0; i<=imgsArray.length; i++ ){
                           linksArray[i]="#";
                       }
-                  } else {
-                    var linksArray = linksMainString.split(",");
                   }
                   var baseURL = location.protocol+'//'+location.hostname+'/';
-                  // var baseURL = location.href;
                   //var baseURL = prot+'//'+hst+'/';
                   console.log(baseURL);
 
@@ -1543,13 +1057,13 @@
 
                   function setLeftImage(left, top, img_index){
                       var imageName = imgsArray[img_index];
-                      $(".left-sidebar").append("<a href='"+linksArray[img_index]+"'><img index='"+img_index+"' src='"+baseURL+truck_folder_name+"/trucks_light/" + imageName + ".svg'></a>");
+                      $(".left-sidebar").append("<a href='"+linksArray[img_index]+"'><img index='"+img_index+"' src='"+baseURL+truck_folder_name+"/trucks_light/" + imageName + ".png'></a>");
                       $(".left-sidebar a").last().css({"top": top + "px", "left": left + "px"});
                   }
 
                   function setRightImage(right, top, img_index){
                       var imageName = imgsArray[img_index];
-                      $(".right-sidebar").append("<a href='"+linksArray[img_index]+"'><img index='"+img_index+"' src='"+baseURL+truck_folder_name+"/trucks_light/" + imageName + ".svg'></a>");
+                      $(".right-sidebar").append("<a href='"+linksArray[img_index]+"'><img index='"+img_index+"' src='"+baseURL+truck_folder_name+"/trucks_light/" + imageName + ".png'></a>");
                       $(".right-sidebar a").last().css({"top": top + "px", "right": right + "px"});
                   }
 
@@ -1587,16 +1101,17 @@
                     //Change image on hover
                     $('.left-sidebar a img, .right-sidebar a img').mouseenter(function(){
                         var img_index = ($(this).attr('index'));
-                        $(this).attr('src', baseURL+truck_folder_name+'/trucks/' + imgsArray[img_index] + '.svg')
+                        $(this).attr('src', baseURL+truck_folder_name+'/trucks/' + imgsArray[img_index] + '.png')
                     });
 
                     $('.left-sidebar a img, .right-sidebar a img').mouseleave(function(){
                         var img_index = ($(this).attr('index'));
-                        $(this).attr('src', baseURL+truck_folder_name+'/trucks_light/' + imgsArray[img_index] + '.svg')
+                        $(this).attr('src', baseURL+truck_folder_name+'/trucks_light/' + imgsArray[img_index] + '.png')
                     });
              }
          }();
         /* Sidebar End */
+
 
         // Responsive Flag Combo
         if(viewPortWidth <= 767 ){
@@ -1629,13 +1144,14 @@
         ! function() {
 
             if ($("body").hasClass("page-id-homepage")) {
-                if ( !cookie.getCookie("ever_visited_flat") ) {
+                //if ( !cookie.getCookie("ever_visited_flat") ) {
+                if ( true ) {
 
                     var expires = new Date();
                     expires.setFullYear(expires.getFullYear() + 1);
                     expires = expires.toUTCString();
 
-                    cookie.setCookie("ever_visited_flat", "YES", expires);
+                    //cookie.setCookie("ever_visited_flat", "YES", expires);
                     //alert("set cookie for first visit");
 
                     $("footer .cookies").show();
@@ -1668,30 +1184,3 @@
 
     });
 })(jQuery);
-
-/* Drift Async Module Start */
-
-! function() {
-    var t;
-    if (t = window.driftt = window.drift = window.driftt || [], !t.init) return t.invoked ? void(window.console && console.error && console.error("Drift snippet included twice.")) : (t.invoked = !0,
-        t.methods = ["identify", "config", "track", "reset", "debug", "show", "ping", "page", "hide", "off", "on"],
-        t.factory = function(e) {
-            return function() {
-                var n;
-                return n = Array.prototype.slice.call(arguments), n.unshift(e), t.push(n), t;
-            };
-        }, t.methods.forEach(function(e) {
-            t[e] = t.factory(e);
-        }), t.load = function(t) {
-            var e, n, o, i;
-            e = 3e5, i = Math.ceil(new Date() / e) * e, o = document.createElement("script"),
-                o.type = "text/javascript", o.async = !0, o.crossorigin = "anonymous", o.src = "https://js.driftt.com/include/" + i + "/" + t + ".js",
-                n = document.getElementsByTagName("script")[0], n.parentNode.insertBefore(o, n);
-        });
-}();
-drift.SNIPPET_VERSION = '0.3.1';
-// old    drift.load('r8ez9x624k5p');
-var driftCode =  $('#driftCode').html();
-drift.load(driftCode);
-
-/* Drift Async Module End */

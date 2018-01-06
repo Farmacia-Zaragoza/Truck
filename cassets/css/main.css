@@ -9,7 +9,13 @@ html,body{
   width: 100%;
   height: 100%;
 }
+@font-face {
+  font-family: 'bjorn';
+  src: url("../fonts/Bjorn%20Light.otf") format("opentype"); }
 
+.left-sidebar, .left-sidebar a, .right-sidebar, .right-sidebar a{
+  cursor: url(../../img/icons/brqx_mouse_icon_truck_left_100_100.png), pointer;
+}
 html {
   color: #222;
   font-size: 1em;
