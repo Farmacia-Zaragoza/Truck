@@ -1667,11 +1667,11 @@ a.pop-container-L.active::after {
   }
 
   //AutoScroll Button
-  .auto_scroll_button>img#auto_scroll_green{
-    display: none;
-  }
   .auto_scroll_button>img#auto_scroll_red{
     display: block;
+  }
+  .auto_scroll_button>img#auto_scroll_green{
+    display: none;
   }
   .auto_scroll_button.auto_scroll_enabled>img#auto_scroll_green{
     display: block;
@@ -1685,12 +1685,13 @@ a.pop-container-L.active::after {
 
 
   //KeyboardControlButton
-  .keyboard_control_button>img#keyboard_green{
-    display: none;
-  }
   .keyboard_control_button>img#keyboard_red{
     display: block;
   }
+  .keyboard_control_button>img#keyboard_green{
+    display: none;
+  }
+  
   .keyboard_control_button.keyboard_control_enabled>img#keyboard_green{
     display: block;
   }

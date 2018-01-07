@@ -845,18 +845,30 @@
         }
 
 
-        //Policy controls
+    /* Policy controls Start */
 
         $('.zoom_control_button').click(function() {
             var incress = $(this).hasClass('zoom_in_policy'); //check which button it is. zoom in or out
             var fontSize = parseFloat($(".policy_inner").css('font-size'));
             if(incress)
-                $(".policy_inner").css('font-size', (fontSize * 1.2)+'px');
+                $(".policy_inner").css('font-size', `${fontSize * 1.2}px`);
             else
-                $(".policy_inner").css('font-size', (fontSize * 0.8)+'px');
+                $(".policy_inner").css('font-size', `${fontSize * 0.8}px`);
         });
 
+        var policy_auto_scroll_enabled = true;
+        $('.auto_scroll_button').click(function() {
+            policy_auto_scroll_enabled = !policy_auto_scroll_enabled;
+            $(this).toggleClass('auto_scroll_enabled');
+        });
 
+        var policy_keyboard_control_enabled = true;
+        $('.keyboard_control_button').click(function() {
+            policy_keyboard_control_enabled = !policy_keyboard_control_enabled;
+            $(this).toggleClass('keyboard_control_enabled');
+        });
+
+    /* Policy controls End */
 
         // loading gif whole page starts
         //must be at second last beofre cookie banner of js file
