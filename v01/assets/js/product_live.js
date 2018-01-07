@@ -1494,6 +1494,9 @@
 
         // Responsive Flag Combo
         if(viewPortWidth <= 767 ){
+            $('.lang-container a.pop-container-L.active').click(function(event){
+                event.preventDefault();
+            });
 
             $('.lang-container a.pop-container-L.active').mouseenter(function(){
                 $('.lang-container .flags').css('overflow', 'visible');
