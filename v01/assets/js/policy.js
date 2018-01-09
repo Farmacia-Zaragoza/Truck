@@ -847,26 +847,85 @@
 
     /* Policy controls Start */
 
+        var scrollDiv = $(".policy_text_container");
+        var policy_auto_scroll_enabled = true;
+        var policy_keyboard_control_enabled = true;
+
         $('.zoom_control_button').click(function() {
             var incress = $(this).hasClass('zoom_in_policy'); //check which button it is. zoom in or out
-            var fontSize = parseFloat($(".policy_inner").css('font-size'));
+            var fontSize = parseFloat(scrollDiv.css('font-size'));
             if(incress)
-                $(".policy_inner").css('font-size', `${fontSize * 1.2}px`);
+                scrollDiv.css('font-size', `${fontSize * 1.2}px`);
             else
-                $(".policy_inner").css('font-size', `${fontSize * 0.8}px`);
+                scrollDiv.css('font-size', `${fontSize * 0.8}px`);
         });
-
-        var policy_auto_scroll_enabled = true;
+        
         $('.auto_scroll_button').click(function() {
             policy_auto_scroll_enabled = !policy_auto_scroll_enabled;
             $(this).toggleClass('auto_scroll_enabled');
         });
-
-        var policy_keyboard_control_enabled = true;
+        
         $('.keyboard_control_button').click(function() {
             policy_keyboard_control_enabled = !policy_keyboard_control_enabled;
             $(this).toggleClass('keyboard_control_enabled');
         });
+
+        function auto_scroll_down(){
+            scrollDiv.stop();
+            var remHeight = scrollDiv[0].scrollHeight - scrollDiv.height();
+            var pos = scrollDiv.scrollTop();
+            var scrollableHeight = remHeight - pos;
+            var scrollSpeed = scrollableHeight * 20;
+            scrollDiv.animate({
+                scrollTop: remHeight
+            },{
+                duration: scrollSpeed,
+                easing: "linear"
+            });
+        };
+
+        function auto_scroll_up(){
+            scrollDiv.stop();
+            var pos = scrollDiv.scrollTop();
+            var scrollSpeed = pos * 20;
+            scrollDiv.animate({
+                scrollTop: 0
+            },{
+                duration: scrollSpeed,
+                easing: "linear"
+            });
+        };
+
+
+        $(document).keydown(function (e) {
+
+            if (policy_keyboard_control_enabled)
+            {
+                if (e.keyCode == 38) //ArrowUp Key
+                    auto_scroll_up();
+
+                else if (e.keyCode == 40)  //ArrowDown key
+                   auto_scroll_down();
+                
+                else if (e.keyCode == 13) //Return/Enter
+                    scrollDiv.stop();
+            }
+
+        });
+
+        var autoScrollTrigger = $(".auto_scroll_trigger");
+        autoScrollTrigger.hover(function() {
+            if(policy_auto_scroll_enabled){
+                if($(this).hasClass('trigger_up')) //check which trigger it is. up or down
+                    auto_scroll_up();
+                else
+                    auto_scroll_down();
+            }
+        }, function() {
+            if(policy_auto_scroll_enabled)
+                scrollDiv.stop();
+        });
+
 
     /* Policy controls End */
 
