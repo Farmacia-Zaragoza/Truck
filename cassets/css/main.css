@@ -1706,30 +1706,49 @@ a.pop-container-L.active::after {
 
   .policy_inner {
     height: 100%;
-    overflow-y: scroll;
+    overflow-y: hidden;
     font-size: 1em;
     background-color: #EDEDED;
+    position: relative;
+  }
+  .policy_text_container{
+    overflow-y: scroll;
+    width: 100%;
+    height: 100%;
+  }
+  .auto_scroll_trigger {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 20%;
+    background-color: transparent;
+  }
+  .auto_scroll_trigger.trigger_up{
+    top: 0;
+  }
+  .auto_scroll_trigger.trigger_down{
+    bottom: 0;
   }
   /* Stylish ScrollBar Start */
-  .policy_inner::-webkit-scrollbar {
+  .policy_text_container::-webkit-scrollbar {
       width: 12px;
   }
    
   /* Track */
-  .policy_inner::-webkit-scrollbar-track {
+  .policy_text_container::-webkit-scrollbar-track {
       -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
       -webkit-border-radius: 10px;
       border-radius: 10px;
   }
    
   /* Handle */
-  .policy_inner::-webkit-scrollbar-thumb {
+  .policy_text_container::-webkit-scrollbar-thumb {
       -webkit-border-radius: 10px;
       border-radius: 10px;
       background: #D0DEEE; 
       -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
   }
-  .policy_inner::-webkit-scrollbar-thumb:window-inactive {
+  .policy_text_container::-webkit-scrollbar-thumb:window-inactive {
     background: #D0DEEE; 
   }
   /* Stylish ScrollBar End */
