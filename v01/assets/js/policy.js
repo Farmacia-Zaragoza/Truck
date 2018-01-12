@@ -160,7 +160,7 @@
 
 
 
-/* Main_live Start from here */
+/* Policy.js Start Start from here */
 
 (function($) {
     $(document).ready(function() {
@@ -850,24 +850,55 @@
         var scrollDiv = $(".policy_text_container");
         var policy_auto_scroll_enabled = true;
         var policy_keyboard_control_enabled = true;
+        var fontSize;
+        
+        //checking cookies
+        (function(){
+            //getting and setting fontSize
+            fontSize = cookie.getCookie("pFontSize");
+            if(fontSize)
+                scrollDiv.css('font-size', `${fontSize}px`);
+            else
+                fontSize = parseFloat(scrollDiv.css('font-size'));
+
+            //getting and seeting the autoScroll option
+            if(cookie.getCookie("pASE") === "false"){ //don't have to do anything if it's true or not set
+                policy_auto_scroll_enabled = false;
+                $('.auto_scroll_button').removeClass('auto_scroll_enabled');
+            }
+
+            //getting and seeting the KeyboardScroll option
+            if(cookie.getCookie("pKCE") === "false"){ //don't have to do anything if it's true or not set
+                policy_keyboard_control_enabled = false;
+                $('.keyboard_control_button').removeClass('keyboard_control_enabled');
+            }
+        })();
+
 
         $('.zoom_control_button').click(function() {
             var incress = $(this).hasClass('zoom_in_policy'); //check which button it is. zoom in or out
-            var fontSize = parseFloat(scrollDiv.css('font-size'));
-            if(incress)
-                scrollDiv.css('font-size', `${fontSize * 1.2}px`);
-            else
-                scrollDiv.css('font-size', `${fontSize * 0.8}px`);
+            
+            if(incress){
+                fontSize = Math.floor(fontSize * 1.2);
+                scrollDiv.css('font-size', `${fontSize}px`);
+            }
+            else{
+                fontSize = Math.floor(fontSize * 0.8);
+                scrollDiv.css('font-size', `${fontSize}px`);
+            }
+            cookie.setCookie("pFontSize",fontSize);
         });
         
         $('.auto_scroll_button').click(function() {
             policy_auto_scroll_enabled = !policy_auto_scroll_enabled;
             $(this).toggleClass('auto_scroll_enabled');
+            cookie.setCookie("pASE", policy_auto_scroll_enabled);
         });
         
         $('.keyboard_control_button').click(function() {
             policy_keyboard_control_enabled = !policy_keyboard_control_enabled;
             $(this).toggleClass('keyboard_control_enabled');
+            cookie.setCookie("pKCE", policy_keyboard_control_enabled)
         });
 
         function auto_scroll_down(){
