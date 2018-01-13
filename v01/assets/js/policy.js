@@ -834,13 +834,13 @@
 
         // Responsive Flag Combo
         if(viewPortWidth <= 767 ){
+            $('.lang-container a.pop-container-L.active').click(function(event){
+                event.preventDefault();
+                $('.lang-container .flags').toggleClass('mVisible');
+            })
 
-            $('.lang-container a.pop-container-L.active').mouseenter(function(){
-                $('.lang-container .flags').css('overflow', 'visible');
-            });
-
-            $('.lang-container .flags').mouseleave(function(){
-                $('.lang-container .flags').css('overflow', 'hidden');
+            $('.lang-container .flags').focusout(function(){
+                $(this).removeClass('mVisible');
             });
         }
 
