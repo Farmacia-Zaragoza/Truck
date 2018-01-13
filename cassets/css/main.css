@@ -1247,6 +1247,8 @@ footer .plus {
     display: none;
   }
 
+
+
   .link-description.lang.active{
   visibility: hidden;
   }
@@ -1280,6 +1282,10 @@ footer .plus {
     position: relative;
     height: 50px;
     z-index: 99;
+  }
+  
+  .lang-container .flags.mVisible{
+    overflow: visible;
   }
   
   .lang-container a.pop-container-L {
