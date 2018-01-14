@@ -834,13 +834,17 @@
 
         // Responsive Flag Combo
         if(viewPortWidth <= 767 ){
-            $('.lang-container a.pop-container-L.active').click(function(event){
+            var flags = $('.lang-container .flags');
+            
+            $('.lang-container .flags>a.pop-container-L.active').click(function(event){
                 event.preventDefault();
-                $('.lang-container .flags').toggleClass('mVisible');
+                flags.toggleClass('mVisible');
             })
 
-            $('.lang-container .flags').focusout(function(){
-                $(this).removeClass('mVisible');
+            document.addEventListener('click', function( event ) {
+              if (flags !== event.target && !flags[0].contains(event.target)) {    
+                flags.removeClass('mVisible');
+              }
             });
         }
 
