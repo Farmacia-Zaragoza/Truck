@@ -1282,11 +1282,9 @@ footer .plus {
     position: relative;
     height: 50px;
     z-index: 99;
+    display: none;
   }
   
-  .lang-container .flags.mVisible{
-    overflow: visible;
-  }
   
   .lang-container a.pop-container-L {
     margin: 0;
@@ -1329,6 +1327,57 @@ a.pop-container-L.active::after {
     border-right: 8px solid transparent;
     border-top: 10px solid #fff;
 }
+  /*Responsive Flag Combo Start Here*/
+
+  .lang-container.clearfix.mVisible {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.7);
+      z-index: 9;
+      display: flex;
+      flex-direction: column;
+  }
+  
+  .lang-container.clearfix.mVisible>.flags {
+      margin: auto;
+      height: 85%;
+      width: 150px;
+      float: none;
+      display: block;
+  }
+
+  .activeFlagContainer {
+      position: absolute;
+  }
+
+  .lang-container.clearfix.mVisible>.activeFlagContainer {
+      top: 0;
+      right: 0;
+  }
+  .lang-container.clearfix.mVisible>.activeFlagContainer>a.active{
+    height: 100px;
+    width: 150px;
+    padding: 5px 10px;
+  }
+  .lang-container.clearfix.mVisible>.activeFlagContainer>a.active::after, .flagSlideButtons{
+    display: none;
+  }
+  .mVisible>.flagSlideButtons{
+    display: block;
+    width: 60px;
+    margin: auto;
+  }
+  .lang-container.clearfix.mVisible a.pop-container-L{
+    background-color: transparent;
+    border: none;
+    height: 100px;
+    width: 150px;
+  }
+  /*Responsive Flag Combo End Here*/
+
   .visible-xs {
     display: block; }
   .hidden-xs {

@@ -1598,20 +1598,69 @@
          }();
         /* Sidebar End */
 
-        // Responsive Flag Combo
+        /* Responsive Flag Combo Start */
         if(viewPortWidth <= 767 ){
-            $('.lang-container a.pop-container-L.active').click(function(event){
+            var flagsContainer = $('.lang-container');
+
+            //Move the active Flag out of the Container
+            var activeFlag = $(flagsContainer).find("a.active").detach();
+            var activeFlagContainer = document.createElement("div");
+            $(activeFlagContainer).addClass('activeFlagContainer');
+            $(activeFlagContainer).append(activeFlag);
+            $(flagsContainer).append(activeFlagContainer);
+
+            //Add buttons
+            var flagSlideUp = document.createElement("img");
+            var flagSlideDown = document.createElement("img");
+            flagSlideUp.src = "http://truck.dbrqx.com/index1/img/arrows/brqx_arrow_gray_up_060_2018.svg";
+            flagSlideDown.src = "http://truck.dbrqx.com/index1/img/arrows/brqx_arrow_gray_down_060_2018.svg";
+            $(flagSlideDown).addClass('flagSlideDown').addClass('flagSlideButtons');
+            $(flagSlideUp).addClass('flagSlideUp').addClass('flagSlideButtons');
+            $(flagsContainer).prepend(flagSlideUp).append(flagSlideDown);
+            // console.log(flagSlideUp, flagSlideDown);
+                        
+            $('.lang-container .activeFlagContainer>a.active').click(function(event){
                 event.preventDefault();
+                flagsContainer.toggleClass('mVisible');
             })
 
-            $('.lang-container a.pop-container-L.active').mouseenter(function(){
-                $('.lang-container .flags').css('overflow', 'visible');
-            });
+            var flagScrollDiv = $(flagsContainer).find('.flags');
+            function flag_scroll_down(){
+                flagScrollDiv.stop();
+                var remHeight = flagScrollDiv[0].scrollHeight - flagScrollDiv.height();
+                var pos = flagScrollDiv.scrollTop();
+                var scrollableHeight = remHeight - pos;
+                var scrollSpeed = scrollableHeight * 20;
+                flagScrollDiv.animate({
+                    scrollTop: remHeight
+                },{
+                    duration: scrollSpeed,
+                    easing: "linear"
+                });
+            };
 
-            $('.lang-container .flags').mouseleave(function(){
-                $('.lang-container .flags').css('overflow', 'hidden');
+            function flag_scroll_up(){
+                flagScrollDiv.stop();
+                var pos = flagScrollDiv.scrollTop();
+                var scrollSpeed = pos * 20;
+                flagScrollDiv.animate({
+                    scrollTop: 0
+                },{
+                    duration: scrollSpeed,
+                    easing: "linear"
+                });
+            };
+
+            $(".flagSlideButtons").hover(function() {
+                if($(this).hasClass('flagSlideUp'))
+                    flag_scroll_up();
+                else
+                    flag_scroll_down();
+            }, function() {
+                $(flagScrollDiv).stop();
             });
         }
+        /* Responsive Flag Combo End */
 
 
         // loading gif whole page starts
