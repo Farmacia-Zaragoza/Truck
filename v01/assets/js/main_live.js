@@ -1622,6 +1622,17 @@
             $('.lang-container .activeFlagContainer>a.active').click(function(event){
                 event.preventDefault();
                 flagsContainer.toggleClass('mVisible');
+
+                if($(flagsContainer).hasClass('mVisible')){
+                    $("body").on("mousewheel", function(e){
+                        e.preventDefault(); //preventing mouseWhele Scroll
+                    });
+
+                    $(flagsContainer).on("touchmove", function(e){
+                        e.preventDefault(); //preventing touch Scroll
+                    })
+                } else 
+                    $("body").unbind(); // reseting mouseWhele Scroll in normal view
             })
 
             var flagScrollDiv = $(flagsContainer).find('.flags');
