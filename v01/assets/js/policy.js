@@ -214,7 +214,7 @@
         var windowHeight = $(window).height();
 
         $(window).resize(function() {
-            if(windowWidth != $(window).width() || windowHeight != $(window).height()) {
+            if(windowWidth != $(window).width()) {
                 location.reload();
                 return;
             }
@@ -629,7 +629,8 @@
 
         /* Sidebar Starts */
         ! function() {
-            //chnaging both sidebar width dynamically
+            if (viewPortWidth > 767) {
+              //chnaging both sidebar width dynamically
               var container_width = $('.container').width();
               // console.log("container_width",container_width);
               
@@ -752,6 +753,7 @@
                     var img_index = ($(this).attr('index'));
                     $(this).attr('src', baseURL+truck_img_folder_name+'/trucks_light/' + imgsArray[img_index] + '.png')
                 });
+            }
          }();
         /* Sidebar End */
 

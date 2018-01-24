@@ -536,7 +536,7 @@
         var windowHeight = $(window).height();
 
         $(window).resize(function() {
-            if(windowWidth != $(window).width() || windowHeight != $(window).height()) {
+            if(windowWidth != $(window).width()) {
                 location.reload();
                 return;
             }
@@ -1360,7 +1360,7 @@
 
         /* Sidebar Starts */
         ! function() {
-             if ($("body").hasClass("page-id-homepage")) {
+             if (viewPortWidth > 767) {
                 //chnaging both sidebar width dynamically
                   var container_width = $('.container').width();
                   // console.log("container_width",container_width);
