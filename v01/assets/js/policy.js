@@ -629,7 +629,6 @@
 
         /* Sidebar Starts */
         ! function() {
-            if (viewPortWidth > 767) {
               //chnaging both sidebar width dynamically
               var container_width = $('.container').width();
               // console.log("container_width",container_width);
@@ -753,7 +752,6 @@
                     var img_index = ($(this).attr('index'));
                     $(this).attr('src', baseURL+truck_img_folder_name+'/trucks_light/' + imgsArray[img_index] + '.png')
                 });
-            }
          }();
         /* Sidebar End */
 

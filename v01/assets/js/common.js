@@ -12,6 +12,13 @@ $(document).ready(function() {
             }
         });
 
+    // Global BaseURL and Image Folder
+      var baseURL = location.protocol+'//'+location.hostname+'/';
+      // console.log(baseURL);
+
+      var truck_img_folder_name = $("#truck_folder_name").html();
+      // console.log('mini truck Image folder: '+truck_img_folder_name);
+
 
         if ($("body").hasClass("page-id-homepage")) {
 
@@ -661,7 +668,6 @@ $(document).ready(function() {
 
      /* Sidebar Starts */
         ! function() {
-             if (viewPortWidth > 767) {
                 //chnaging both sidebar width dynamically
                   var container_width = $('.container').width();
                   var calculated_width = Math.floor(($(window).width()/2)-(container_width/2));
@@ -703,8 +709,6 @@ $(document).ready(function() {
                                    "truck_model_005_violet_left",
                                    "truck_model_005_violet_right",
                                    ];
-                  var truck_folder_name = $("#truck_folder_name").html();
-                  console.log('mini truck Image folder: '+truck_folder_name);
                   var linksMainString = $('#truck_links').data('links');
                   var linksArray = linksMainString.split(",");
                   //console.log(linksArray);
@@ -715,10 +719,6 @@ $(document).ready(function() {
                           linksArray[i]="#";
                       }
                   }
-                  var baseURL = location.protocol+'//'+location.hostname+'/';
-                  // var baseURL = location.href;
-                  //var baseURL = prot+'//'+hst+'/';
-                  console.log(baseURL);
 
                   function generateRandomForArray() {
                       var num = Math.floor(Math.random() * imgsArray.length);
@@ -786,21 +786,82 @@ $(document).ready(function() {
                         var img_index = ($(this).attr('index'));
                         $(this).attr('src', baseURL+truck_folder_name+'/trucks_light/' + imgsArray[img_index] + '.svg');
                     });
-             }
          }();
         /* Sidebar End */
 
-    // Responsive Flag Combo
+    /* Responsive Flag Combo Start */
         if(viewPortWidth <= 767 ){
+            var flagsContainer = $('.lang-container');
 
-            $('.lang-container a.pop-container-L.active').mouseenter(function(){
-                $('.lang-container .flags').css('overflow', 'visible');
-            });
+            //Moving the active Flag out of the Container
+            var activeFlag = $(flagsContainer).find("a.active").detach();
+            var activeFlagContainer = document.createElement("div");
+            $(activeFlagContainer).addClass('activeFlagContainer');
+            $(activeFlagContainer).append(activeFlag);
+            $(flagsContainer).append(activeFlagContainer);
 
-            $('.lang-container .flags').mouseleave(function(){
-                $('.lang-container .flags').css('overflow', 'hidden');
+            //Adding buttons
+            var flagSlideUp = document.createElement("img");
+            var flagSlideDown = document.createElement("img");
+            flagSlideUp.src = `${baseURL}${truck_img_folder_name}/arrows/brqx_arrow_gray_up_060_2018.svg`;
+            flagSlideDown.src = `${baseURL}${truck_img_folder_name}/arrows/brqx_arrow_gray_down_060_2018.svg`;
+            $(flagSlideDown).addClass('flagSlideDown').addClass('flagSlideButtons');
+            $(flagSlideUp).addClass('flagSlideUp').addClass('flagSlideButtons');
+            $(flagsContainer).prepend(flagSlideUp).append(flagSlideDown);
+                        
+            $('.lang-container .activeFlagContainer>a.active').click(function(event){
+                event.preventDefault();
+                flagsContainer.toggleClass('mVisible');
+
+                if($(flagsContainer).hasClass('mVisible')){
+                    $("body").on("mousewheel", function(e){
+                        e.preventDefault(); //preventing mouseWhele Scroll
+                    });
+
+                    $(flagsContainer).on("touchmove", function(e){
+                        e.preventDefault(); //preventing touch Scroll
+                    })
+                } else 
+                    $("body").unbind(); // reseting mouseWhele Scroll in normal view
+            })
+
+            var flagScrollDiv = $(flagsContainer).find('.flags');
+            function flag_scroll_down(){
+                flagScrollDiv.stop();
+                var remHeight = flagScrollDiv[0].scrollHeight - flagScrollDiv.height();
+                var pos = flagScrollDiv.scrollTop();
+                var scrollableHeight = remHeight - pos;
+                var scrollSpeed = scrollableHeight * 20;
+                flagScrollDiv.animate({
+                    scrollTop: remHeight
+                },{
+                    duration: scrollSpeed,
+                    easing: "linear"
+                });
+            };
+
+            function flag_scroll_up(){
+                flagScrollDiv.stop();
+                var pos = flagScrollDiv.scrollTop();
+                var scrollSpeed = pos * 20;
+                flagScrollDiv.animate({
+                    scrollTop: 0
+                },{
+                    duration: scrollSpeed,
+                    easing: "linear"
+                });
+            };
+
+            $(".flagSlideButtons").hover(function() {
+                if($(this).hasClass('flagSlideUp'))
+                    flag_scroll_up();
+                else
+                    flag_scroll_down();
+            }, function() {
+                $(flagScrollDiv).stop();
             });
         }
+        /* Responsive Flag Combo End */
 
     // loading gif whole page starts
         //must be at second last beofre cookie banner of js file

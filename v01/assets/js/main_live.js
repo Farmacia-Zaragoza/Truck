@@ -616,6 +616,13 @@
             });
             //Global blazy module finishes
 
+        // Global BaseURL and Image Folder
+          var baseURL = location.protocol+'//'+location.hostname+'/';
+          // console.log(baseURL);
+
+          var truck_img_folder_name = $("#truck_folder_name").html();
+          // console.log('mini truck Image folder: '+truck_img_folder_name);
+
 
 
 
@@ -1466,7 +1473,6 @@
 
         /* Sidebar Starts */
         ! function() {
-             if (viewPortWidth > 767) {
                 //chnaging both sidebar width dynamically
                   var container_width = $('.container').width();
                   // console.log("container_width",container_width);
@@ -1511,8 +1517,7 @@
                                    "truck_model_005_violet_left",
                                    "truck_model_005_violet_right",
                                    ];
-                  var truck_folder_name = $("#truck_folder_name").html();
-                  console.log('mini truck Image folder: '+truck_folder_name);
+                  
                   var linksMainString = $('#truck_links').data('links');
                   if(linksMainString === undefined){
                       console.log("Error: There is no link for the trucks");
@@ -1523,10 +1528,6 @@
                   } else {
                     var linksArray = linksMainString.split(",");
                   }
-                  var baseURL = location.protocol+'//'+location.hostname+'/';
-                  // var baseURL = location.href;
-                  //var baseURL = prot+'//'+hst+'/';
-                  console.log(baseURL);
 
                   function generateRandomForArray() {
                       var num = Math.floor(Math.random() * imgsArray.length);
@@ -1594,7 +1595,6 @@
                         var img_index = ($(this).attr('index'));
                         $(this).attr('src', baseURL+truck_folder_name+'/trucks_light/' + imgsArray[img_index] + '.svg')
                     });
-             }
          }();
         /* Sidebar End */
 
@@ -1602,22 +1602,21 @@
         if(viewPortWidth <= 767 ){
             var flagsContainer = $('.lang-container');
 
-            //Move the active Flag out of the Container
+            //Moving the active Flag out of the Container
             var activeFlag = $(flagsContainer).find("a.active").detach();
             var activeFlagContainer = document.createElement("div");
             $(activeFlagContainer).addClass('activeFlagContainer');
             $(activeFlagContainer).append(activeFlag);
             $(flagsContainer).append(activeFlagContainer);
 
-            //Add buttons
+            //Adding buttons
             var flagSlideUp = document.createElement("img");
             var flagSlideDown = document.createElement("img");
-            flagSlideUp.src = "http://truck.dbrqx.com/index1/img/arrows/brqx_arrow_gray_up_060_2018.svg";
-            flagSlideDown.src = "http://truck.dbrqx.com/index1/img/arrows/brqx_arrow_gray_down_060_2018.svg";
+            flagSlideUp.src = `${baseURL}${truck_img_folder_name}/arrows/brqx_arrow_gray_up_060_2018.svg`;
+            flagSlideDown.src = `${baseURL}${truck_img_folder_name}/arrows/brqx_arrow_gray_down_060_2018.svg`;
             $(flagSlideDown).addClass('flagSlideDown').addClass('flagSlideButtons');
             $(flagSlideUp).addClass('flagSlideUp').addClass('flagSlideButtons');
             $(flagsContainer).prepend(flagSlideUp).append(flagSlideDown);
-            // console.log(flagSlideUp, flagSlideDown);
                         
             $('.lang-container .activeFlagContainer>a.active').click(function(event){
                 event.preventDefault();
