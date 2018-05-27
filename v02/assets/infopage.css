@@ -1,0 +1,155 @@
+.truck_info_area {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+.truck_ifo_bg {
+	z-index: 110;
+	background: rgba(10, 10, 10, .5);
+}
+.info_mini_right_icon {
+    display: block;
+    position: fixed;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+}
+.page_info_modal {
+    display: inline-block;
+    width: 350px;
+    height: auto;
+    background: #20B4E9;
+    text-align: center;
+    padding: 15px 10px;
+    border-radius: 5px;
+    position: fixed;
+    top: 8rem;
+    right: 9.5rem;
+    display: none;
+    z-index: 110;
+}
+.page_info_modal_inner {
+    background: #A9E6D4;
+    padding: 10px;
+    color: #000;
+}
+.running_truck {
+    position: fixed;
+    top: 0;
+    right: -27%;
+    z-index: 110;
+}
+.running_truck_img{
+    width: 375px;
+}
+.dev_live_green,.html_php_green,.http_https_green,.anon_auth_green,.user_human_green {
+	position: absolute;
+	width: 45px;
+	height: 20px;
+    top: 12px;
+}
+img.dev_live_green {
+    left: 6rem;
+}
+img.http_https_green {
+    left: 12.5rem;
+}
+img.html_php_green {
+    left: 9rem;
+}
+img.anon_auth_green {
+    left: 15.5rem;
+}
+img.user_human_green {
+    left: 18.5rem;
+}
+.scroll_enabled_green, .keyboard_enabled_green {
+    position: absolute;
+     top: 39px; 
+    width: 59px;
+    height: 48px;
+}
+img.scroll_enabled_green {
+    left: 17rem;
+}
+img.keyboard_enabled_green {
+    left: 11.5rem;
+}
+.font_size_control ul {
+	display: block;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	color: #000;
+}
+.font_size_control {
+    position: absolute;
+    top: 28px;
+    left: 7rem;
+}
+img.arrow_down_red {
+    width: 30px;
+    height: 12px;
+    margin-top: -17px;
+}
+img.arrow_up_red {
+    width: 30px;
+    height: 14px;
+    margin-top: 12px;
+}
+.show_it {
+	display: none;
+}
+.show_status_on_truck {
+    width: 100%;
+    height: 160px;
+}
+.show_status {
+    position: fixed;
+    top: 27rem;
+    left: 23rem;
+    display: none;
+    z-index: 110;
+}
+.show_status_box {
+    position: absolute;
+    top: -76px;
+    left: 6.5rem;
+    background: #fff;
+    width: 32rem;
+    height: 10rem;
+    border-radius: 10px;
+    padding: 10px;
+    color: #BC6C2E;
+}
+.show_status_box h1 {
+    padding: 0;
+    margin: 0;
+}
+.show_status_symbol ul {
+	display: block;
+	list-style: none;
+}
+.show_status_symbol ul li {
+	margin: 0;
+	padding: 0;
+	display: block;
+	float: left;
+	margin-right: 10px;
+}
+.show_status_symbol {
+    position: fixed;
+    top: 28rem;
+    left: 5rem;
+    display: none;
+    z-index: 110;
+}
+img#show_status_symbol_icon {
+    display: block;
+    margin-top: 49px;
+}
+#info_close_truck_head {
+	display: none;
+}
