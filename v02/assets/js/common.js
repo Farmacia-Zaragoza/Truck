@@ -6,7 +6,7 @@ $(document).ready(function() {
         var windowHeight = $(window).height();
 
         $(window).resize(function() {
-            if(windowWidth != $(window).width() || windowHeight != $(window).height()) {
+            if(windowWidth != $(window).width()) {
                 location.reload();
                 return;
             }
@@ -452,11 +452,11 @@ $(document).ready(function() {
             }
         }();
 
-    /* Flag or Language Section Start */
+        /* Flag or Language Section Start */
 
             ! function() {
                  if ($("body").hasClass("page-id-homepage")) {
-                     //$(".lang-container a:first-child").addClass('active');
+
                      var active_top = $(".lang-container a.active").position().top;
                      var active_left = $(".lang-container a.active").position().left;
                      var scrollSpeed = 10;
@@ -515,7 +515,7 @@ $(document).ready(function() {
                              });
 
                              //mouseleave from any arrow
-                             $(".lang-grand svg.arrow, .lang-grand img.arrow").mouseleave(function() {
+                             $(".lang-grand .arrow").mouseleave(function() {
                                  $(".lang-container .flags").stop();
                                  $(".lang-container .ellipse").stop();
                              });
@@ -529,7 +529,7 @@ $(document).ready(function() {
                                  running = false;
                              }
 
-                             $(".lang-grand .arrow-down > svg.arrow").on("click", function() {
+                             $(".lang-grand .arrow-down > .arrow").on("click", function() {
 
                                  if (running == false) {
                                      var remHeight = $(".lang-container .flags")[0].scrollHeight - $(".lang-container .flags").height();
@@ -549,7 +549,7 @@ $(document).ready(function() {
                                  }
                              });
 
-                             $(".lang-grand .arrow-up > svg.arrow").on("click", function() {
+                             $(".lang-grand .arrow-up > .arrow").on("click", function() {
 
                                  if (running == false) {
                                      var remHeight = $(".lang-container .flags")[0].scrollHeight - $(".lang-container .flags").height();
@@ -568,7 +568,7 @@ $(document).ready(function() {
                                  }
                              });
 
-                             $(".lang-grand .arrow-right > svg.arrow").on("click", function() {
+                             $(".lang-grand .arrow-right > .arrow").on("click", function() {
 
                                  if (running == false) {
 
@@ -590,7 +590,7 @@ $(document).ready(function() {
 
                              });
 
-                             $(".lang-grand .arrow-left > svg.arrow").on("click", function() {
+                             $(".lang-grand .arrow-left > .arrow").on("click", function() {
 
                                  if (running == false) {
 
@@ -661,7 +661,7 @@ $(document).ready(function() {
 
      /* Sidebar Starts */
         ! function() {
-             if ($("body").hasClass("page-id-homepage")) {
+             if (viewPortWidth > 767) {
                 //chnaging both sidebar width dynamically
                   var container_width = $('.container').width();
                   var calculated_width = Math.floor(($(window).width()/2)-(container_width/2));
@@ -716,6 +716,7 @@ $(document).ready(function() {
                       }
                   }
                   var baseURL = location.protocol+'//'+location.hostname+'/';
+                  // var baseURL = location.href;
                   //var baseURL = prot+'//'+hst+'/';
                   console.log(baseURL);
 
@@ -789,18 +790,97 @@ $(document).ready(function() {
          }();
         /* Sidebar End */
 
-    // Responsive Flag Combo
+
+        /* Responsive Flag Combo Start */
         if(viewPortWidth <= 767 ){
+            var flagsContainer = $('.lang-container');
 
-            $('.lang-container a.pop-container-L.active').mouseenter(function(){
-                $('.lang-container .flags').css('overflow', 'visible');
-            });
+            //Move the active Flag out of the Container
+            var activeFlag = $(flagsContainer).find("a.active").detach();
+            var activeFlagContainer = document.createElement("div");
+            $(activeFlagContainer).addClass('activeFlagContainer');
+            $(activeFlagContainer).append(activeFlag);
+            $(flagsContainer).append(activeFlagContainer);
 
-            $('.lang-container .flags').mouseleave(function(){
-                $('.lang-container .flags').css('overflow', 'hidden');
+            //Add buttons
+            var flagSlideUp = document.createElement("img");
+            var flagSlideDown = document.createElement("img");
+            flagSlideUp.src = "http://truck.dbrqx.com/index1/img/arrows/brqx_arrow_gray_up_060_2018.svg";
+            flagSlideDown.src = "http://truck.dbrqx.com/index1/img/arrows/brqx_arrow_gray_down_060_2018.svg";
+            $(flagSlideDown).addClass('flagSlideDown').addClass('flagSlideButtons');
+            $(flagSlideUp).addClass('flagSlideUp').addClass('flagSlideButtons');
+            $(flagsContainer).prepend(flagSlideUp).append(flagSlideDown);
+            // console.log(flagSlideUp, flagSlideDown);
+                        
+            $('.lang-container .activeFlagContainer>a.active').click(function(event){
+                event.preventDefault();
+                flagsContainer.toggleClass('mVisible');
+
+                if($(flagsContainer).hasClass('mVisible')){
+                    $("body").on("mousewheel", function(e){
+                        e.preventDefault(); //preventing mouseWhele Scroll
+                    });
+
+                    $(flagsContainer).on("touchmove", function(e){
+                        e.preventDefault(); //preventing touch Scroll
+                    })
+                } else 
+                    $("body").unbind(); // reseting mouseWhele Scroll in normal view
+            })
+
+            var flagScrollDiv = $(flagsContainer).find('.flags');
+            function flag_scroll_down(){
+                flagScrollDiv.stop();
+                var remHeight = flagScrollDiv[0].scrollHeight - flagScrollDiv.height();
+                var pos = flagScrollDiv.scrollTop();
+                var scrollableHeight = remHeight - pos;
+                var scrollSpeed = scrollableHeight * 20;
+                flagScrollDiv.animate({
+                    scrollTop: remHeight
+                },{
+                    duration: scrollSpeed,
+                    easing: "linear"
+                });
+            };
+
+            function flag_scroll_up(){
+                flagScrollDiv.stop();
+                var pos = flagScrollDiv.scrollTop();
+                var scrollSpeed = pos * 20;
+                flagScrollDiv.animate({
+                    scrollTop: 0
+                },{
+                    duration: scrollSpeed,
+                    easing: "linear"
+                });
+            };
+
+            $(".flagSlideButtons").hover(function() {
+                if($(this).hasClass('flagSlideUp'))
+                    flag_scroll_up();
+                else
+                    flag_scroll_down();
+            }, function() {
+                $(flagScrollDiv).stop();
             });
         }
+        /* Responsive Flag Combo End */
 
+    
+//        // Responsive Flag Combo
+//        if(viewPortWidth <= 767 ){
+//
+//            $('.lang-container a.pop-container-L.active').mouseenter(function(){
+//                $('.lang-container .flags').css('overflow', 'visible');
+//            });
+//
+//            $('.lang-container .flags').mouseleave(function(){
+//                $('.lang-container .flags').css('overflow', 'hidden');
+//            });
+//        }
+    
+ 
+    
     // loading gif whole page starts
         //must be at second last beofre cookie banner of js file
         //so that loader hides at last
